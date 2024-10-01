@@ -1,0 +1,16 @@
+{
+  "api": {
+    "org_id": "9862ac4d-d104-4cd6-a657-905f7c0c8b42",
+    "token": "OyapkcFmtW6Mgl2m9VJzu2FFdNycIZag8WqWOTuQJ49Wh7vGPcYIym9rJGamL9r0OjIzwzRqsneamg6AfOkEXGWUiOV41SrZ",
+    "mist_url": "https://api.ac2.mist.com/api/v1/"
+  },
+
+  "site": {
+    "name": "Genpact Bucharest",
+    "timezone": "Europe/Romania",
+    "country_code": "Romania",
+    "address": "17 rue du stade, Dijon, France",
+    "lat" : "47.324494",
+    "lng" : "5.069182"
+  }
+}
