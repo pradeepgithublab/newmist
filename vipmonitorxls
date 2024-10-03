@@ -1,0 +1,62 @@
+import requests
+import json
+import pandas as pd
+
+# Define your Mist API credentials and organization/site IDs
+api_token = 'xh9oBdbYQllXCmCh5Ad63h3Y3enrewPWrDD37XpYA5f1ealYTPJQEb2FMkmo0DBi9vFIiLJpNlHd6fM95Zog8e0NldKTnOol'
+org_id = '15e7597e-9b06-4381-8443-16aba95c5e0d'
+site_id = '7ddd12b8-7ecf-451f-9f52-88b3b7ae30c3'
+
+# Headers for the API requests
+headers = {
+    'Content-Type': 'application/json',
+    'Authorization': f'Token {api_token}'
+}
+
+# Function to load hostnames from an Excel file
+def load_hostnames_from_excel(file_path):
+    df = pd.read_excel(file_path)  # Assuming 'hostname' is the column header
+    return df['hostname'].tolist()
+
+# Function to filter client data based on the provided hostname
+def get_wifi_metrics_for_vip_hostnames(vip_hostnames):
+    vip_metrics = {}
+    
+    # Fetch client connection details from the Mist API
+    response = requests.get(
+        f'https://api.eu.mist.com/api/v1/sites/{site_id}/stats/clients',
+        headers=headers
+    )
+
+    if response.status_code == 200:
+        client_data = response.json()
+        if client_data:
+            for client_info in client_data:
+                # Only process the entry with the matching hostname
+                if client_info.get('hostname') in vip_hostnames:
+                    vip_metrics[client_info.get('hostname')] = {
+                        'mac': client_info.get('mac', 'N/A'),
+                        'hostname': client_info.get('hostname', 'N/A'),
+                        'ip': client_info.get('ip', 'N/A'),
+                        'ssid': client_info.get('ssid', 'N/A'),
+                        'band': client_info.get('band', 'N/A'),
+                        'channel': client_info.get('channel', 'N/A'),
+                        'vlan_id': client_info.get('vlan_id', 'N/A'),
+                        'rssi': client_info.get('rssi', 'N/A'),
+                        'snr': client_info.get('snr', 'N/A')
+                    }
+        else:
+            print("No client data available.")
+    else:
+        print(f"Failed to retrieve data. Status code: {response.status_code}")
+    
+    return vip_metrics
+
+def main():
+    # Load hostnames from Excel file
+    vip_hostnames = load_hostnames_from_excel('path_to_excel_file.xlsx')  # Replace with your file path
+    vip_metrics = get_wifi_metrics_for_vip_hostnames(vip_hostnames)
+    print(json.dumps(vip_metrics, indent=4))
+
+if __name__ == '__main__':
+    main()
