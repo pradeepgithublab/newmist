@@ -54,7 +54,7 @@ def get_wifi_metrics_for_vip_hostnames(vip_hostnames):
 
 def main():
     # Load hostnames from Excel file
-    vip_hostnames = load_hostnames_from_excel('path_to_excel_file.xlsx')  # Replace with your file path
+    vip_hostnames = load_hostnames_from_excel('C:\\mist\\hostname.xlsx')  # Replace with your file path
     vip_metrics = get_wifi_metrics_for_vip_hostnames(vip_hostnames)
     print(json.dumps(vip_metrics, indent=4))
 
